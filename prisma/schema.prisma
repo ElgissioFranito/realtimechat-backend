@@ -1,0 +1,46 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+
+model Discussion {
+  discussion_id  Int         @id @default(autoincrement())
+  discussion_name String
+  created_at     DateTime    @default(now())
+  updated_at     DateTime    @default(now())
+  messages        Message[]
+  users           DiscussionUser[]
+}
+
+model Message {
+  message_id     Int         @id @default(autoincrement())
+  discussion_id  Int
+  user_id        Int
+  message_content String
+  created_at     DateTime    @default(now())
+  updated_at     DateTime    @default(now())
+  discussion     Discussion  @relation(fields: [discussion_id], references: [discussion_id])
+  user           User        @relation(fields: [user_id], references: [user_id])
+}
+
+model User {
+  user_id        Int         @id @default(autoincrement())
+  user_name      String
+  user_password  String
+  user_token     String
+  messages       Message[]
+  discussions    DiscussionUser[]
+}
+
+model DiscussionUser {
+  discussion_id  Int
+  user_id        Int
+  discussion     Discussion  @relation(fields: [discussion_id], references: [discussion_id])
+  user           User        @relation(fields: [user_id], references: [user_id])
+  @@id([discussion_id, user_id])
+}
