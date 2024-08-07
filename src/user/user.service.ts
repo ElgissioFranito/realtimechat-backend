@@ -7,7 +7,7 @@ export class UserService {
     constructor(private prisma: PrismaService) { }
 
     async findAll() {
-        return await this.prisma.user.findMany({
+        return await this.prisma.users.findMany({
             include: {
                 messages: true,
             }

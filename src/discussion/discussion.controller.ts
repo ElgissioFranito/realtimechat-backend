@@ -6,14 +6,14 @@ export class DiscussionController {
 
     constructor(private discussionsService: DiscussionService) { }
 
-    @Get()
-    getDiscussions() {
-        return this.discussionsService.getDiscussions();
+    @Get(':id')
+    getDiscussions(@Param('id') userId : string) {
+        return this.discussionsService.getDiscussions(parseInt(userId));
     }
 
-    @Get(':id')
-    getDiscussionMessages(@Param('id') id : string) {
-        return this.discussionsService.getDiscussionMessages(id);
+    @Get('message/:id')
+    getDiscussionMessages(@Param('id') idDiscussion : string) {
+        return this.discussionsService.getDiscussionMessages(parseInt(idDiscussion));
     }
 
 }
