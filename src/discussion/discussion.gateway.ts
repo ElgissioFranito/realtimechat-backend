@@ -10,6 +10,7 @@ import { MessageService } from 'src/message/message.service';
 import { CreateMessageDto } from 'src/message/dto/create-message.dto';
 import { CreateDiscussionDto } from './dto/create-discussion.dto';
 import { SharedService } from 'src/services/shared/shared.service';
+import { BigIntService } from 'src/big-int-serializer-middleware/big-Int.service';
 
 @WebSocketGateway({
   cors: {
@@ -22,7 +23,8 @@ export class DiscussionGateway {
 
   constructor(private discussionService: DiscussionService,
     private messageService: MessageService,
-    private sharedService : SharedService) { }
+    private sharedService : SharedService,
+    private bigIntService : BigIntService) { }
 
   @SubscribeMessage('getUserDiscussions')
   async getUserDiscussions(@MessageBody() userIds: number[]) {
@@ -31,9 +33,7 @@ export class DiscussionGateway {
       
       // convertir les bigInt en string avant de l'envoyer au frontend
       const safeDiscussions = discussions.map( discus => {
-        return JSON.parse(JSON.stringify(discus, (key,value) => 
-          typeof value === 'bigint' ? value.toString() : value
-        ));
+        return this.bigIntService.serialize(discus)
       });
 
       this.server.to(userId.toString()).emit('discussion', safeDiscussions);

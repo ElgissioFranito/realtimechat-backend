@@ -7,7 +7,7 @@ export class BigIntSerializerMiddleware implements NestMiddleware {
     const originalJson = res.json;
     res.json = function (body) {
       body = JSON.parse(JSON.stringify(body, (key, value) => 
-        typeof value === 'bigint' ? value.toString() : value
+        typeof value === 'bigint' ? parseInt(value.toString()) : value
       ));
       originalJson.call(this, body);
     };

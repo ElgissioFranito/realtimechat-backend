@@ -10,10 +10,11 @@ import { DiscussionGateway } from './discussion/discussion.gateway';
 import { DiscussionController } from './discussion/discussion.controller';
 import { MessageController } from './message/message.controller';
 import { SharedService } from './services/shared/shared.service';
+import { BigIntService } from './big-int-serializer-middleware/big-Int.service';
 
 @Module({
   imports: [],
   controllers: [AppController, UserController, DiscussionController, MessageController],
-  providers: [AppService, PrismaService, UserService, DiscussionService, MessageService, DiscussionGateway, SharedService],
+  providers: [AppService, PrismaService, UserService, DiscussionService, MessageService, DiscussionGateway, SharedService, BigIntService],
 })
 export class AppModule {}

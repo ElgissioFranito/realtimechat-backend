@@ -1,14 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateDiscussionDto } from './dto/create-discussion.dto';
+import { BigIntService } from 'src/big-int-serializer-middleware/big-Int.service';
 
 @Injectable()
 export class DiscussionService {
-    constructor(public prisma: PrismaService) { }
+    constructor(public prisma: PrismaService, public bigIntService: BigIntService) { }
 
     async getDiscussions(userId: number) {
 
-        const data = this.prisma.discussions.findMany({
+        return this.prisma.discussions.findMany({
             where: {
                 discussion_user: {
                     some: {
@@ -29,13 +30,6 @@ export class DiscussionService {
                 updated_at : 'desc'
             }
         });
-
-        // Sérialisation manuelle des BigInt
-        const serializedData = JSON.parse(JSON.stringify(data, (key, value) => {
-            return typeof value === 'bigint' ? value.toString() : value;
-        }));
-
-        return data;
     }
 
     async getOne(discussionId: number) {
