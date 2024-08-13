@@ -9,10 +9,11 @@ import { MessageService } from './message/message.service';
 import { DiscussionGateway } from './discussion/discussion.gateway';
 import { DiscussionController } from './discussion/discussion.controller';
 import { MessageController } from './message/message.controller';
+import { SharedService } from './services/shared/shared.service';
 
 @Module({
   imports: [],
   controllers: [AppController, UserController, DiscussionController, MessageController],
-  providers: [AppService, PrismaService, UserService, DiscussionService, MessageService, DiscussionGateway],
+  providers: [AppService, PrismaService, UserService, DiscussionService, MessageService, DiscussionGateway, SharedService],
 })
 export class AppModule {}
